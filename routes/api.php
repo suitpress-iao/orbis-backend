@@ -1,14 +1,20 @@
 <?php
 
+use App\Http\Modules\User\Controller\UserController;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/ping', function () {
     return response()->json('pong', 200);
 });
 
+Route::post('/register', [UserController::class, 'crearUsuario'])->name('crearUsuario');
+Route::post('/login', [UserController::class, 'login'])->name('login');
+
+
 Route::middleware('auth:api')->group(function () {
-    // require __DIR__ . '/operadores/operadores.php'; 
-    return response()->json('u are authenticated', 200);
+
+
+    require __DIR__ . '/operadores/operadores.php'; 
 
 });
 

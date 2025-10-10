@@ -28,7 +28,7 @@ class MakeServiceCommand extends Command
         $this->makeDirectory($filePath);
         file_put_contents($filePath, $this->buildClass($name));
 
-        $this->info("✅ Servicio creado: {$filePath}");
+        $this->components->info("Service [{$filePath}] created successfully.");
         return Command::SUCCESS;
     }
 

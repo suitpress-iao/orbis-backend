@@ -13,7 +13,7 @@ Route::post('/login', [UserController::class, 'login'])->name('login');
 
 Route::middleware('auth:api')->group(function () {
 
-
+    require __DIR__ . '/cargos/cargos.php';
     require __DIR__ . '/operadores/operadores.php'; 
 
 });

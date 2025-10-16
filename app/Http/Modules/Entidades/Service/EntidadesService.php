@@ -16,7 +16,7 @@ class EntidadesService
         return Entidades::get();
     }
 
-    public function obtenerEntidad($id)
+    public function mostrarEntidadPorId($id)
     {
         return Entidades::findOrFail($id);
     }
@@ -28,7 +28,7 @@ class EntidadesService
         return $entidad;
     }
 
-    public function eliminarEntidad($id)
+    public function eliminarEntidadPorId($id)
     {
         $entidad = Entidades::findOrFail($id);
         $entidad->delete();

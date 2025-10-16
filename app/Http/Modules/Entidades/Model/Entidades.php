@@ -6,7 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class Entidades extends Model
 {
-    protected $table = "cargos";
+    protected $table = "entidades";
 
     protected $fillable = [
         'nombre'

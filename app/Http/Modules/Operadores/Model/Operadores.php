@@ -14,17 +14,17 @@ class Operadores extends Model
 
     public function user()
     {
-        return $this->belongsTo(\App\Http\Modules\User\Models\User::class, 'user_id');
+        return $this->belongsTo(User::class, 'user_id');
     }
 
       public function entidad()
     {
-        return $this->belongsTo(\App\Http\Modules\Entidades\Model\Entidades::class, 'entidad_id'); //pertenece
+        return $this->belongsTo(Entidades::class, 'entidad_id'); //pertenece
     }
 
     public function cargo()
     {
-        return $this->belongsTo(\App\Http\Modules\Cargos\Model\Cargos::class, 'cargo_id');
+        return $this->belongsTo(Cargos::class, 'cargo_id');
     }
 
 }

@@ -6,29 +6,17 @@ use Illuminate\Support\Facades\Schema;
 
 return new class extends Migration
 {
-    
     public function up(): void
     {
-        schema::create('operadores', function (blueprint $table){
+        Schema::create('operadores', function (Blueprint $table) {
             $table->id();
 
-            $table->unsignedBigInteger('user_id');
-            $table->unsignedBigInteger('entidad_id');
-            $table->unsignedBigInteger('cargo_id');
+            
+            $table->foreignId('user_id')->constrained('users')->onDelete('cascade');
+            $table->foreignId('entidad_id')->constrained('entidades')->onDelete('cascade');
+            $table->foreignId('cargo_id')->constrained('cargos')->onDelete('cascade');
 
             $table->timestamps();
-
-            $table->foreign('user_id')
-                  ->references('id')->on('users')
-                  ->onDelete('cascade');
-
-            $table->foreign('entidad_id')
-                  ->references('id')->on('entidades')
-                  ->onDelete('restrict'); 
-
-            $table->foreign('cargo_id')
-                  ->references('id')->on('cargos')
-                  ->onDelete('restrict');         
         });
     }
 
@@ -37,3 +25,4 @@ return new class extends Migration
         Schema::dropIfExists('operadores');
     }
 };
+

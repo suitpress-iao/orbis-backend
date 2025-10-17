@@ -28,7 +28,7 @@ class UserController extends Controller
             $usuario = $this->userService->login($request->all());
             return response()->json($usuario, 201);
         } catch (\Throwable $th) {
-            return response()->json(['error' => 'Error al crear el usuario', 'code' => $th->getCode(), 'mensaje' => $th->getMessage()]);
+            return response()->json(['error' => 'Error al iniciar sesión', 'code' => $th->getCode(), 'mensaje' => $th->getMessage()]);
         }
     }
 }

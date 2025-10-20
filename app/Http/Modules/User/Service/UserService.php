@@ -14,10 +14,6 @@ class UserService
 {
     public function crearUsuario(array $data)
     {
-        /* $data['password'] = Hash::make($data['password']);
-        return User::create($data); */
-
-        // Crear usuario y operador de forma transaccional para evitar registros huérfanos
         return DB::transaction(function () use ($data){
             $user = User::create([
                 'name' => $data['name'],
@@ -25,7 +21,7 @@ class UserService
                 'password' => Hash::make($data['password']),
             ]);
 
-            //para crear el operador debo verificar que existan los datos de entidad y cargo
+          
             if (
                 isset($data['entidad_id'], $data['cargo_id']) &&
                 Entidades::find($data['entidad_id']) &&
@@ -38,7 +34,7 @@ class UserService
                  ]);
 
                 
-                 //retornar toda la informacion sin tener que mirar todos los modelos 
+                 
                 return $user->load('operadores');
             }
 

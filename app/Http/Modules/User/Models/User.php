@@ -3,6 +3,7 @@
 namespace App\Http\Modules\User\Models;
 
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
+use App\Http\Modules\Operadores\Model\Operadores;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
@@ -48,4 +49,12 @@ class User extends Authenticatable
             'password' => 'hashed',
         ];
     }
+
+    //Relacion con el modelo operadores
+
+    public function operadores()
+    {
+         return $this->hasOne(Operadores::class, 'user_id');
+    }
 }
+

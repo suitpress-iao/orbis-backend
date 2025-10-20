@@ -48,4 +48,12 @@ class User extends Authenticatable
             'password' => 'hashed',
         ];
     }
+
+    //Relacion con el modelo operadores
+
+    public function operadores()
+    {
+         return $this->hasOne(\App\Http\Modules\Operadores\Model\Operadores::class, 'user_id');
+    }
 }
+

@@ -4,7 +4,10 @@ namespace App\Http\Modules\User\Controller;
 
 use App\Http\Controllers\Controller;
 use App\Http\Modules\User\Service\UserService;
-use Illuminate\Http\Request;
+use App\Http\Modules\User\Request\CrearUsuarioRequest;
+use App\Http\Modules\User\Request\LoginRequest;
+
+
 
 class UserController extends Controller
 {
@@ -12,10 +15,10 @@ class UserController extends Controller
     {
     }
 
-    public function crearUsuario(Request $request)
+    public function crearUsuario(CrearUsuarioRequest $request)
     {
         try {
-            $usuario = $this->userService->crearUsuario($request->all());
+            $usuario = $this->userService->crearUsuario($request->validated());
             return response()->json($usuario, 201);
         } catch (\Throwable $th) {
             return response()->json(['error' => 'Error al crear el usuario', 'code' => $th->getCode(), 'mensaje' => $th->getMessage()]);
@@ -25,7 +28,7 @@ class UserController extends Controller
     public function login(Request $request)
     {
         try {
-            $usuario = $this->userService->login($request->all());
+            $usuario = $this->userService->login($request->validated());
             return response()->json($usuario, 201);
         } catch (\Throwable $th) {
             return response()->json(['error' => 'Error al iniciar sesión', 'code' => $th->getCode(), 'mensaje' => $th->getMessage()]);

@@ -4,6 +4,8 @@ namespace App\Http\Modules\Entidades\Controller;
 
 use App\Http\Controllers\Controller;
 use App\Http\Modules\Entidades\Service\EntidadesService;
+use App\Http\Modules\Entidades\Request\CrearEntidadRequest;
+use App\Http\Modules\Entidades\Request\ActualizarEntidadRequest;
 use Illuminate\Http\Request;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
@@ -15,21 +17,16 @@ class EntidadesController extends Controller
     public function __construct(private EntidadesService $entidadesService)
     {}
 
-    public function crearEntidad(Request $request): JsonResponse
+    public function crearEntidad(CrearEntidadRequest $request): JsonResponse
     {
         try {
-            /* agregare un validador para garantizar el tipo de dato ingresado */
-            $validated = $request->validate([
-                'nombre' => 'required|string|max:255',
-            ]);
+            $validated = $request->validated();
 
             $entidad = $this->entidadesService->crearEntidad($validated);
             return response()->json($entidad, 201);
         } catch (Throwable $th) {
             return response()->json([
-                'error' => 'Error al crear la entidad',
-                'detalle' => $th->getMessage()
-            ], 500);
+                'error' => 'Error al crear la entidad'], 500);
         }
     }
 
@@ -56,13 +53,12 @@ class EntidadesController extends Controller
         }
     }
 
-    public function actualizarEntidad(Request $request, $id): JsonResponse
+    public function actualizarEntidad(ActualizarEntidadRequest $request, $id): JsonResponse
     {
         try {
 
-            $validated = $request->validate([
-                'nombre' => 'required|string|max:255',
-            ]);
+            $validated = $request->validate();
+            
             $entidad = $this->entidadesService->actualizarEntidad($id, $validated);
 
             return response()->json($entidad, 200);

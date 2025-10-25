@@ -3,6 +3,8 @@
 namespace App\Http\Modules\Cargos\Controller;
 use App\Http\Controllers\Controller;
 use App\Http\Modules\Cargos\Service\CargosService;
+use App\Http\Modules\Cargos\Request\CrearCargoRequest;
+use App\Http\Modules\Cargos\Request\ActualizarCargoRequest;
 use Illuminate\Http\Request;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
@@ -13,13 +15,11 @@ class CargosController extends Controller
     public function __construct(private CargosService $cargosService)
     {}
 
-    public function crearCargo(Request $request): JsonResponse
+    public function crearCargo(CrearCargoRequest $request): JsonResponse
     {
         try {
 
-            $validated = $request->validate([
-                'nombre' => 'required|string|max:255',
-            ]);
+            $validated = $request->validated();
 
             $cargo = $this->cargosService->crearCargo($validated);
             return response()->json($cargo, 201);
@@ -51,12 +51,12 @@ class CargosController extends Controller
         }
     }
 
-    public function actualizarCargo(Request $request, $id): JsonResponse
+    public function actualizarCargo(actualizarCargoRequest $request, $id): JsonResponse
     {
         try {
-            $validated = $request->validate([
-                'nombre' => 'required|String|max:255',
-            ]);
+
+            $validated = $request->validated();
+            
             $cargo = $this->cargosService->actualizarCargo($id, $validated);
 
             return response()->json($cargo, 200);

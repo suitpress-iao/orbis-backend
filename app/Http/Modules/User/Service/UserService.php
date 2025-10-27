@@ -21,7 +21,7 @@ class UserService
                 'password' => Hash::make($data['password']),
             ]);
 
-          
+
             if (
                 isset($data['entidad_id'], $data['cargo_id']) &&
                 Entidades::find($data['entidad_id']) &&
@@ -33,8 +33,8 @@ class UserService
                     'cargo_id' => $data['cargo_id'],
                  ]);
 
-                
-                 
+
+
                 return $user->load('operadores');
             }
 
@@ -42,7 +42,7 @@ class UserService
         });
     }
 
-    public function login(array $data)
+    public function login(array $data): array
     {
         if (
             !Auth::attempt([

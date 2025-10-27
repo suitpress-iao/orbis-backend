@@ -6,7 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Http\Modules\User\Service\UserService;
 use App\Http\Modules\User\Request\CrearUsuarioRequest;
 use App\Http\Modules\User\Request\LoginRequest;
-
+use Illuminate\Http\Request;
 
 
 class UserController extends Controller

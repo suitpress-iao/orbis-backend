@@ -9,6 +9,7 @@ use App\Http\Modules\Cargos\Model\Cargos;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\DB;
+use Spatie\Permission\Models\Role;
 
 class UserService
 {
@@ -60,5 +61,23 @@ class UserService
             'user' => $user,
             'token' => $token,
         ];
+    }
+
+    public function assignRole($user, array $roles)
+    {
+        $user->syncRoles($roles);
+        return $user->load('roles');
+    }
+
+    public function assignPermission($user, array $permissions)
+    {
+        $user->syncPermissions($permissions);
+        return $user->load('permissions');
+    }
+
+    public function assignPermissionToRole($role, array $permissions)
+    {
+        $role->syncPermissions($permissions);
+        return $role->load('permissions');
     }
 }

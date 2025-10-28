@@ -36,7 +36,7 @@ class UserService
 
 
 
-                return $user->load('operadores');
+                return $user->load('operador');
             }
 
             return $user;

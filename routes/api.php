@@ -11,7 +11,10 @@ Route::get('/ping', function () {
 // Rutas públicas
 Route::prefix('auth')->group(function () {
     Route::post('/login', [UserController::class, 'login']);
+    Route::post('/register', [UserController::class, 'register']);
 });
+
+
 
 // Rutas protegidas con Sanctum
 Route::middleware('auth:sanctum')->group(function () {

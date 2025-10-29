@@ -4,6 +4,7 @@ namespace App\Http\Modules\User\Controller;
 
 use App\Http\Controllers\Controller;
 use App\Http\Modules\User\Service\UserService;
+use App\Http\Modules\User\Request\CrearUsuarioRequest;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Http\JsonResponse;
@@ -83,6 +84,22 @@ class UserController extends Controller
             ], $th->getCode() ?: 500);
         }
     }
+
+    public function register(CrearUsuarioRequest $request): JsonResponse
+{
+    try {
+        $user = $this->userService->crearUsuario($request->validated());
+
+        return response()->json([
+            'message' => 'Usuario creado correctamente.',
+            'user' => $user
+        ], 201);
+    } catch (\Throwable $th) {
+        return response()->json([
+            'message' => $th->getMessage(),
+        ], $th->getCode() ?: 500);
+    }
+}
 
     /**
      * Obtener usuario autenticado

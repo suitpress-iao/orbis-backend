@@ -2,42 +2,34 @@
 
 namespace App\Http\Modules\User\Service;
 
-use App\Http\Modules\User\Models\User;
 use App\Http\Modules\Operadores\Model\Operadores;
-use App\Http\Modules\Entidades\Model\Entidades;
-use App\Http\Modules\Cargos\Model\Cargos;
+use App\Http\Modules\User\Models\User;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\DB;
-use Spatie\Permission\Models\Role;
+use Illuminate\Support\Facades\Hash;
 
 class UserService
 {
     public function crearUsuario(array $data)
     {
-        return DB::transaction(function () use ($data){
+        return DB::transaction(function () use ($data) {
             $user = User::create([
-                'name' => $data['name'],
                 'email' => $data['email'],
                 'password' => Hash::make($data['password']),
+                'activo' => true,
             ]);
 
+            Operadores::create([
+                'user_id' => $user->id,
+                'nombre' => $data['nombre'],
+                'apellido' => 'prueba',
+                'tipo_documento' => 'CC',
+                'documento' => $data['documento'],
+                'entidad_id' => $data['entidad_id'] ?? 1,
+                'cargo_id' => $data['cargo_id'] ?? 1,
+            ]);
 
-            if (
-                isset($data['entidad_id'], $data['cargo_id']) &&
-                Entidades::find($data['entidad_id']) &&
-                Cargos::find($data['cargo_id'])
-                ) {
-                Operadores::create([
-                    'user_id' => $user->id,
-                    'entidad_id' => $data['entidad_id'],
-                    'cargo_id' => $data['cargo_id'],
-                 ]);
-
-
-
-                return $user->load('operador');
-            }
+            return $user->load('operador');
 
             return $user;
         });
@@ -46,7 +38,7 @@ class UserService
     public function login(array $data): array
     {
         if (
-            !Auth::attempt([
+            ! Auth::attempt([
                 'email' => $data['email'] ?? null,
                 'password' => $data['password'] ?? null,
             ])
@@ -66,18 +58,21 @@ class UserService
     public function assignRole($user, array $roles)
     {
         $user->syncRoles($roles);
+
         return $user->load('roles');
     }
 
     public function assignPermission($user, array $permissions)
     {
         $user->syncPermissions($permissions);
+
         return $user->load('permissions');
     }
 
     public function assignPermissionToRole($role, array $permissions)
     {
         $role->syncPermissions($permissions);
+
         return $role->load('permissions');
     }
 }

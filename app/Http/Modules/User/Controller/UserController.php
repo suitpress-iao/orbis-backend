@@ -5,7 +5,7 @@ namespace App\Http\Modules\User\Controller;
 use App\Http\Controllers\Controller;
 use App\Http\Modules\User\Service\UserService;
 use App\Http\Modules\User\Request\CrearUsuarioRequest;
-use App\Models\User;
+use App\Http\Modules\User\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Support\Facades\Auth;
@@ -95,9 +95,7 @@ class UserController extends Controller
             'user' => $user
         ], 201);
     } catch (\Throwable $th) {
-        return response()->json([
-            'message' => $th->getMessage(),
-        ], $th->getCode() ?: 500);
+        return response()->json(['error' => $th]);
     }
 }
 

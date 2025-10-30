@@ -19,6 +19,7 @@ class Operadores extends Model
         'telefono',
         'email_recuperacion',
         'cargo_id',
+        'entidad_id',
     ];
 
     protected $appends = ['nombre_completo', 'tipo_documento_documento'];

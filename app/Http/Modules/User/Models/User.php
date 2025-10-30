@@ -21,9 +21,9 @@ class User extends Authenticatable
      * @var list<string>
      */
     protected $fillable = [
-        'name',
         'email',
         'password',
+        'activo'
     ];
 
     /**
@@ -39,21 +39,17 @@ class User extends Authenticatable
     ];
 
     /**
-     * Get the attributes that should be cast.
+     * The attributes that should be cast.
      *
-     * @return array<string, string>
+     * @var array<string,string>
      */
-    protected function casts(): array
-    {
-        return [
-            'email_verified_at' => 'datetime',
-            'password' => 'hashed',
-        ];
-    }
+    protected $casts = [
+        'email_verified_at' => 'datetime',
+        'password' => 'hashed',
+    ];
 
-    //Relacion con el modelo operadores
-
-    public function operadores()
+    // Relación con el modelo operadores (singular para coincidir con uso en controllers/servicios)
+    public function operador()
     {
          return $this->hasOne(Operadores::class, 'user_id');
     }

@@ -37,7 +37,7 @@ class UserController extends Controller
 
             // Buscar usuario
             $user = User::where('email', $request->email)
-                ->with(['operador.cargo'])
+                ->with(['operador'])
                 ->first();
 
             // Validar credenciales
@@ -47,19 +47,13 @@ class UserController extends Controller
                 ]);
             }
 
-            // Validar que el usuario esté activo
-            if (!$user->activo) {
-                return response()->json([
-                    'message' => 'El usuario no se encuentra activo.'
-                ], 403);
-            }
-
             // Crear nuevo token
             $token = $user->createToken('auth-token')->plainTextToken;
 
             // Obtener permisos usando Spatie
+            $user->load('roles', 'permissions');
             $permissions = $user->getAllPermissions()->pluck('name');
-            $roles = $user->roles->pluck('name');
+            $roles = $user->getRoleNames();
 
             // Preparar respuesta
             return response()->json([
@@ -110,7 +104,7 @@ class UserController extends Controller
         $user = $request->user();
 
         // Cargar relaciones
-        $user->load(['operador.cargo', 'afiliado']);
+        $user->load(['operador.cargo']);
 
         // Obtener permisos
         $permissions = $user->getAllPermissions()->pluck('name');
@@ -124,11 +118,8 @@ class UserController extends Controller
                 'tipo_documento_documento' => $user->operador->tipo_documento_documento,
                 'cargo' => $user->operador->cargo,
             ] : null,
-            'afiliado' => $user->afiliado ? [
-                'nombre_completo' => $user->afiliado->nombre_completo,
-            ] : null,
             'permissions' => $permissions,
-            'roles' => $roles,
+            'roles' => $roles,  
             'password_changed_at' => $user->password_changed_at,
         ], 200);
     }
